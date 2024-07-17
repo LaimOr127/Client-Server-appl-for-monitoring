@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <title>Activity Monitor</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Activity Monitor</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Computer Name</th>
+                <th>Domain Name</th>
+                <th>Last Active</th>
+                <th>Screenshot</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>
+                    {% if row[6] %}
+                    <img src="/screenshot/{{ row[0] }}" alt="screenshot" width="100">
+                    {% else %}
+                    No screenshot
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
