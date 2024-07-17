@@ -6,6 +6,7 @@ import io
 app = Flask(__name__)
 DATABASE = 'activity.db'
 
+# Инициализация базы данных
 def init_db():
     with sqlite3.connect(DATABASE) as conn:
         c = conn.cursor()
@@ -15,6 +16,7 @@ def init_db():
                      (id INTEGER PRIMARY KEY AUTOINCREMENT, activity_id INTEGER, timestamp TEXT, image BLOB, FOREIGN KEY(activity_id) REFERENCES activity(id))''')
         conn.commit()
 
+# API для приёма данных о активности
 @app.route('/api/activity', methods=['POST'])
 def activity():
     data = request.json
@@ -31,6 +33,7 @@ def activity():
     
     return jsonify({"status": "success"}), 200
 
+# API для приёма скриншотов
 @app.route('/api/screenshot', methods=['POST'])
 def screenshot():
     file = request.files['file']
@@ -46,6 +49,7 @@ def screenshot():
     
     return jsonify({"status": "success"}), 200
 
+# Отображение списка активности и скриншотов
 @app.route('/')
 def index():
     with sqlite3.connect(DATABASE) as conn:
@@ -56,6 +60,7 @@ def index():
     
     return render_template('index.html', data=data)
 
+# Получение скриншота по ID
 @app.route('/screenshot/<int:id>')
 def get_screenshot(id):
     with sqlite3.connect(DATABASE) as conn:
